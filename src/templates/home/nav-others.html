@@ -1,0 +1,104 @@
+{% load static %}
+<!-- //top-header -->
+<!-- header-bot-->
+<div class="header-bot">
+    <div class="header-bot_inner_wthreeinfo_header_mid">
+        <!-- header-bot-->
+        <div class="col-md-4 logo_agile">
+            <h1>
+                <a href="{% url "home:homepage" %}">
+                    <img src="{% static "images/logo.png" %}" alt=" ">
+                </a>
+            </h1>
+        </div>
+        <!-- header-bot -->
+        <div class="col-md-8 header">
+            <!-- header lists -->
+            <ul>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#myModal1">
+                        <span class="fas fa-truck" aria-hidden="true"></span>Track Order</a>
+                </li>
+                <li>
+                    <span class="fas fa-phone" aria-hidden="true"></span> 001 234 5678
+                </li>
+                {% if not request.user.is_authenticated %}
+                <li>
+                    <a href="{% url "accounts:login" %}">
+                        <span class="fas fa-unlock-alt" aria-hidden="true"></span> Sign In </a>
+                </li>
+                <li>
+                    <a href="{% url "accounts:register" %}">
+                        <span class="fas fa-pencil-square-o" aria-hidden="true"></span> Sign Up </a>
+                </li>
+                {% else %}
+                <li>
+                    <span class="fas fa-user" aria-hidden="true"></span> Welcome , {{ request.user }}
+                </li>
+                <li> 
+                    <a href="{% url "accounts:logout" %}">
+                    <span class="fas fa-unlock-alt" aria-hidden="true"></span> Sign Out </a>
+                </li>
+               
+                {% endif %}
+            </ul>
+            <!-- //header lists -->
+            <!-- search -->
+            <div class="agileits_search">
+                <form class="form-inline my-2 my-lg-0 search-form" action="{% url "search:product-search" %}">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search your products here ...." aria-label="Search" name="q">
+                    <button class="btn btn-success" type="submit" style="margin-top: 10px;"> <span class="fa fa-search" aria-hidden="true"> </span> Search</button>
+                </form>
+            </div>
+            <!-- //search -->
+            <!-- cart details -->
+            <div class="top_nav_right">
+                <div class="wthreecartaits wthreecartaits2 cart cart box_1">
+                    <a class="btn btn-danger w3view-cart" href="{% url "cart:cart-home" %}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> <span class="cart-count"> {{ request.session.cart_total }}</span> Items</a>
+                </div>
+            </div>
+            <!-- //cart details -->
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+<!-- navigation -->
+<div class="ban-top">
+    <div class="container">
+        <div class="top_nav_left">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                            aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav menu__list">
+                            <li class="active">
+                                <a class="nav-stylehead" href="{% url "home:homepage" %}">Home
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-stylehead" href="{% url "products:product-list" %}">All Products</a>
+                            </li>
+                            <li>
+                                <a class="nav-stylehead" href="{% url "products:featured-product-list" %}">Featured Products</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- //navigation -->

@@ -1,0 +1,73 @@
+{% load static %}
+{% load custom_tags %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<title>Registration | E-BUY</title>
+	{% include "home/header.html" %}
+</head>
+
+<body>
+
+	{% include "home/nav-others.html" %}
+	<!-- //navigation -->
+	<!-- banner-2 -->
+	<div class="page-head_agile_info_w3l">
+
+	</div>
+	<!-- //banner-2 -->
+	<!-- page -->
+	<div class="services-breadcrumb">
+		<div class="agile_inner_breadcrumb">
+			<div class="container">
+				<ul class="w3_short">
+					<li>
+						<a href="{% url "home:homepage" %}">Home</a>
+						<i>|</i>
+					</li>
+					<li>Registration</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //page -->
+	<!-- checkout page -->
+	<div class="privacy">
+		<div class="container">
+			<!-- tittle heading -->
+			<h3 class="tittle-w3l">Registration
+				<span class="heading-style">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+            </h3>
+            
+			<!-- //tittle heading -->
+			<div class="checkout-right">
+				<div class="table-responsive">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                            {{ form|crispy }}
+                        <input type="submit" value="Register" class="btn btn-primary">
+                    </form>
+				</div>
+            </div>
+		</div>
+	</div>
+	{% include "home/before-footer.html" %}	
+	{% include "home/footer.html" %}	
+
+</html>
+
+<!-- <div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Register">
+    </form>
+
+</div> -->
+

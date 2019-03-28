@@ -1,0 +1,99 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<title>Cart | E-BUY</title>
+	{% include "home/header.html" %}
+</head>
+
+<body>
+
+	{% include "home/nav-others.html" %}
+	<!-- //navigation -->
+	<!-- banner-2 -->
+	<div class="page-head_agile_info_w3l">
+
+	</div>
+	<!-- //banner-2 -->
+	<!-- page -->
+	<div class="services-breadcrumb">
+		<div class="agile_inner_breadcrumb">
+			<div class="container">
+				<ul class="w3_short">
+					<li>
+						<a href="{% url "home:homepage" %}">Home</a>
+						<i>|</i>
+					</li>
+					<li>Checkout</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //page -->
+	<!-- checkout page -->
+	<div class="privacy">
+		<div class="container">
+			<!-- tittle heading -->
+			<h3 class="tittle-w3l">Checkout
+				<span class="heading-style">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+            </h3>
+            
+			<!-- //tittle heading -->
+			<div class="checkout-right">
+				<div class="table-responsive">
+                    {% if cart_obj.product.exists %}
+                    <table class="table table-bordered cart-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Product Price</th>
+                                 </tr>
+                            </thead>
+                            <tbody class = "cart-body">
+                                    {% for obj in cart_obj.product.all %}
+                                    <tr class="cart-product">
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>
+                                            <a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a>
+                                            <small>
+                                                {% include "cart/snippets/remove-product.html" with product_id=obj.id %}
+                                            </small>
+                                            </td>
+                                        <td>$ {{ obj.price }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td><b>Sub Total</b> <span class="cart-subtotal">$ {{ cart_obj.sub_total }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td><b>Total</b> <span class="cart-total">$ {{ cart_obj.total }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"></td>
+                                    <td><a href="{% url "cart:checkout" %}" class="btn btn-block btn-primary">Checkout</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="cart-item-remove-form" style="display: none;">
+                            {% include "cart/snippets/remove-product.html" %}
+                        </div>
+                    {% else%}
+                        <h4>Cart is empty</h4>
+                    {% endif %}
+				</div>
+            </div>
+		</div>
+	</div>
+	{% include "home/before-footer.html" %}	
+	{% include "home/footer.html" %}	
+
+</html>

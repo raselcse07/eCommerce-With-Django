@@ -1,0 +1,271 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<title>Checkout | E-BUY</title>
+	{% include "home/header.html" %}
+</head>
+
+<body>
+
+	{% include "home/nav-others.html" %}
+	<!-- //navigation -->
+	<!-- banner-2 -->
+	<div class="page-head_agile_info_w3l">
+
+	</div>
+	<!-- //banner-2 -->
+	<!-- page -->
+	<div class="services-breadcrumb">
+		<div class="agile_inner_breadcrumb">
+			<div class="container">
+				<ul class="w3_short">
+					<li>
+						<a href="{% url "home:homepage" %}">Home</a>
+						<i>|</i>
+					</li>
+					<li>Checkout</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //page -->
+	<!-- checkout page -->
+	<div class="privacy">
+		<div class="container">
+			<!-- tittle heading -->
+			<h3 class="tittle-w3l">Checkout
+				<span class="heading-style">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+            </h3>
+            
+			<!-- //tittle heading -->
+			<div class="checkout-right">
+
+                    {% if not billingprofile %}
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <p class="lead">Login</p>
+                                {% include "accounts/snippets/form.html" with form=login_form next_url=request.build_absolute_uri %}
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <p class="lead">Continue as Guest</p>
+                                {% url "accounts:guest-login" as guest_login %}
+                                {% include "accounts/snippets/form.html" with form=guest_form next_url=request.build_absolute_uri action_url=guest_login %}
+                            </div>
+                        </div>
+                    {% else %}
+                    {% if not order_obj.shipping_address %}
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <p class="lead">Shipping Address</p>
+                            {% url "address:addresses" as checkout_address_create %}
+                            {% include "address/form.html" with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type="shipping" %}
+                        </div>
+
+                        <div class="col-sm-4">
+                            <p class="lead">You can also select address</p>
+                            {% url "address:address_reuse" as address_reuse %}
+                            {% include "address/previous_address.html" with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=address_reuse %}
+                        </div>
+                    </div>
+          
+                    {% elif not order_obj.billing_address %}
+
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <p class="lead">Billing Address</p>
+                            {% url "address:addresses" as checkout_address_create %}
+                            {% include "address/form.html" with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type="billing" %}
+                        </div>
+    
+                        <div class="col-sm-4">
+                            <p class="lead">You can also select address</p>
+                            {% url "address:address_reuse" as address_reuse%}
+                            {% include "address/previous_address.html" with address_qs=address_qs next_url=request.build_absolute_uri action_url=address_reuse address_type='billing'%}
+                        </div>
+                    </div>
+                    {% else %}
+
+                    {% if not billingprofile.has_cards %}
+                    <!-- enter credit card here -->
+
+                    <p class="lead">Add a Payment Method</p>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form class="payment-form" data-next-url="/cart/checkout/" method="POST" id="payment-form" data-token="pk_test_NW2dTXyWJD6CrGWqRLRmmZvA">
+                                <div class="form-row">
+                                    <div id="card-element" class="form-control">
+                                    <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+                                </div>
+                                <br>
+                                <button class="btn btn-success">Submit Payment</button>
+                            </form> 
+                        </div>
+                    </div>
+                    {% else %}
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered cart-table">
+                            <tbody class = "cart-body">
+                                <tr>
+                                    <th>Cart Itmes</th>
+                                    <td>
+                                        {% for product in order_obj.cart.product.all %} {{ product }} {% if not forloop.last %},{% endif %} {% endfor %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Shipping Address</th>
+                                    <td>
+                                        {{ order_obj.shipping_address.address_line_1 }},
+                                        {{ order_obj.shipping_address.address_line_2 }},
+                                        {{ order_obj.shipping_address.city }},
+                                        {{ order_obj.shipping_address.state }},
+                                        {{ order_obj.shipping_address.country }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Cart Total</th>
+                                    <td>$ {{ order_obj.cart.total }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Shipping Cost</th>
+                                    <td>$ {{ order_obj.shipping_total }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <td>$ {{ order_obj.order_total }}</td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                        </div>
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Pay Now</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+		</div>
+    </div>
+    
+	{% include "home/before-footer.html" %}	
+	{% include "home/footer.html" %}	
+    {% block js %}
+    <script>
+
+            var paymentForm = $(".payment-form");
+            
+            if(paymentForm.length > 1) {
+                alert("Only one payment method allowed")
+            }
+            
+            else if(paymentForm.length == 1){
+            
+                var pubKey = paymentForm.attr("data-token");
+                var nextURL = paymentForm.attr("data-next-url");
+                // Create a Stripe client.
+                var stripe = Stripe(pubKey);
+            
+                // Create an instance of Elements.
+                var elements = stripe.elements();
+            
+                // Custom styling can be passed to options when creating an Element.
+                // (Note that this demo uses a wider set of styles than the guide below.)
+                var style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                    color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+                };
+            
+                // Create an instance of the card Element.
+                var card = elements.create('card', {style: style});
+            
+                // Add an instance of the card Element into the `card-element` <div>.
+                card.mount('#card-element');
+            
+                // Handle real-time validation errors from the card Element.
+                card.addEventListener('change', function(event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+                });
+            
+                // Handle form submission.
+                var form = document.getElementById('payment-form');
+                form.addEventListener('submit', function(event) {
+                event.preventDefault();
+            
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                    // Inform the user if there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                    } else {
+                    // Send the token to your server.
+                    stripeTokenHandler(nextURL,result.token);
+                    }
+                });
+                });
+            
+                function redirectToNext(nextPath,timeoffset){
+                    if (nextPath){
+                        setTimeout(function(){
+                            window.location.href = nextPath;
+                        },timeoffset)
+                    }
+                }
+                // Submit the form with the token ID.
+                function stripeTokenHandler(nextURL,token) {
+                    var paymentMethodEndPoint = "/billing/payment/add-card/"
+                    var data = {
+                        "token":token.id
+                    }
+                    $.ajax({
+                        data: data,
+                        url: paymentMethodEndPoint,
+                        method: "POST",
+                        success: function(data){
+                            var seccessMgs = data.message || "Success! Your card has been added."
+                            card.clear()
+                            if (nextURL){
+                                seccessMgs = seccessMgs + "<br><i class='fas fa-spin fa-spinner'></i> Redirecting..."
+                            }
+                            if ($.alert){
+                                $.alert(seccessMgs)
+                                redirectToNext(nextURL,1500)
+                            } else {
+                                $.alert(seccessMgs)
+                            }
+                            
+                            redirectToNext(nextURL,1500)
+                        }
+                    })
+                }
+            
+            }
+</script>
+    {% endblock %}
+</html>

@@ -1,0 +1,170 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<title>E-BUY</title>
+	{% include "home/header.html" %}
+</head>
+
+<body>
+	{% include "home/nav-others.html" %}
+	<!-- banner-2 -->
+	<div class="page-head_agile_info_w3l">
+
+	</div>
+	<!-- //banner-2 -->
+	<!-- page -->
+	<div class="services-breadcrumb">
+		<div class="agile_inner_breadcrumb">
+			<div class="container">
+				<ul class="w3_short">
+					<li>
+						<a href="{% url "home:homepage" %}">Home</a>
+						<i>|</i>
+					</li>
+					<li>All Products</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //page -->
+	<!-- top Products -->
+	<div class="ads-grid">
+		<div class="container">
+			<!-- tittle heading -->
+			<h3 class="tittle-w3l">All Products
+				<span class="heading-style">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+			</h3>
+			<!-- //tittle heading -->
+			<!-- product left -->
+			<div class="side-bar col-md-3">
+			
+				<!-- //price range -->
+				<!-- food preference -->
+				<div class="left-side">
+                    <!-- //price range -->
+				<!-- food preference -->
+				<div class="left-side">
+                        <h3 class="agileits-sear-head">Category</h3>
+                        <ul class="list-group">
+                            {% for category in all_category %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+									<a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+                                      <span class="badge badge-warning badge-pill">{{ category|count_product }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- //food preference -->
+                
+                    <!-- //cuisine -->
+                    <!-- deals -->
+                    <div class="deal-leftmk left-side">
+                        <h3 class="agileits-sear-head">Special Deals</h3>
+                        {% for products in special_deal %}
+                        <div class="special-sec1">
+                            {% if products.product_image %} 
+                                <div class="col-xs-4 img-deals">
+                                    <img src="{{ products.product_image.url }}" alt="{{ products.title }}" class="img-responsive">
+                                </div>
+                            {% endif %}
+                            <div class="col-xs-8 img-deal1">
+                                <h3>{{ products.title }}</h3>
+                                <a href="{{ products.get_absolute_url }}">$ {{ products.price }}</a>
+                                {% include "products/snippets/update-cart.html" with product=products cart=cart_obj %}
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- //deals -->
+				</div>
+			</div>
+			<!-- //product left -->
+			<!-- product right -->
+			<div class="agileinfo-ads-display col-md-9 w3l-rightpro">
+				<div class="wrapper">
+                        {% for products in object_list %}
+						<div class="col-md-4 product-men">
+							<div class="men-pro-item simpleCart_shelfItem">
+								<div class="men-thumb-item">
+                                    {% if products.product_image %} 
+                                        <img src="{{ products.product_image.url }}" alt="{{ products.title }}" class="img-responsive">
+                                    {% endif %}
+									<div class="men-cart-pro">
+										<div class="inner-men-cart-pro">
+											<a href="{{ products.get_absolute_url }}" class="link-product-add-cart">Quick View</a>
+										</div>
+									</div>
+								</div>
+								<div class="item-info-product ">
+									<h4>
+										<a href="{{ products.get_absolute_url }}">{{ products.title }}</a>
+									</h4>
+									<div class="info-product-price">
+										<span class="item_price">$ {{ products.price }}</span>
+										<del>$ {{ products.price|multiply:.47 }}</del>
+									</div>
+								</div>
+							</div>
+                        </div>
+                    {% endfor %}
+				</div>
+			</div>
+			<!-- //product right -->
+		</div>
+	</div>
+	<!-- //top products -->
+	<!-- special offers -->
+	<div class="featured-section" id="projects">
+		<div class="container">
+			<!-- tittle heading -->
+			<h3 class="tittle-w3l">Special Offers
+				<span class="heading-style">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+			</h3>
+			<!-- //tittle heading -->
+			<div class="content-bottom-in">
+                    <ul id="flexiselDemo1">
+                            {% for products in special_offer %}
+                            <li>
+                                <div class="w3l-specilamk">
+                                    <div class="speioffer-agile">
+                                        {% if products.product_image %}
+                                        <a href="{{ products.get_absolute_url }}">
+                                            <img src="{{ products.product_image.url }}" alt="{{ products.title }}" class="img-responsive">
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-name-w3l">
+                                        <h4>
+                                            <a href="{{ products.get_absolute_url }}">{{ products.title }}</a>
+                                        </h4>
+                                        <div class="w3l-pricehkj">
+                                            <h6>$ {{ products.price }}</h6>
+                                            <p>Save 86% <del>$ {{ products.price|multiply:.86 }}</del></p>
+                                        </div>
+                                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                                            <a href="{{ products.get_absolute_url }}"><input type="submit" name="submit" value="view product" class="button" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+			</div>
+		</div>
+	</div>
+	<!-- //special offers -->
+	{% include "home/before-footer.html" %}	
+	{% include "home/footer.html" %}	
+</html>
