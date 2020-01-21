@@ -20,9 +20,3 @@ Developed a modern, robust eCommerce web app using the Django Framework. Feature
 | ----------------|:-----------------------------------------:| --------:|
 | Python (Django),Django Rest Framework | HTML5, CSS3, Bootstrap, Javascript, Ajax  |PostgreSQL|
 
-
-
-Live Demo - http://ecommerce.raselsplanet.com/
-
-
-For more info please visit - http://raselsplanet.com/project/ecommerce-platform/
