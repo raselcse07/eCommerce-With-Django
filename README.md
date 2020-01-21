@@ -1,4 +1,3 @@
-![alt text](http://raselsplanet.com/media/eCommerce.png "eCommerce Platform")
 # eCommerce-With-Django
 
 Developed a modern, robust eCommerce web app using the Django Framework. Features included cart, the product creates, delete, update, refund, payment, guest login, user login/profile, coupon system, etc.
